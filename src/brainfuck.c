@@ -8,7 +8,7 @@
 int tape[MAX_CELLS];
 
 /* Evaluate operators that are passed in the form of a character array */
-void bf_eval(char chars[]) {
+void bf_eval(char *chars) {
 	char c;
 	int pointer = 0;
 	int char_pointer = 0;
