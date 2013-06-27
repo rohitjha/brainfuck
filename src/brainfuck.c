@@ -10,40 +10,58 @@ int tape[MAX_CELLS];
 /* Evaluate operators that are passed in the form of a character array */
 void bf_eval(char *chars) {
 	char c;
-	int pointer = 0;
+	int cell = 0;
 	int char_pointer = 0;
 	int loop = 0;
 
 	/* Loop through all character in the character array */
 	while (char_pointer < strlen(chars)) {
 		switch (chars[char_pointer]) {
-			/* Move the pointer to the right */
+			
+			/* Move the pointer to the right (next memory cell) */
 			case '>':
-				pointer++;
+				cell++;
+				/* Circular tape */
+				if (cell >= MAX_CELLS) {
+					cell = cell % MAX_CELLS;
+				}
 				break;
-			/* Move the pointer to the left */
+			
+			/* Move the pointer to the left (previous memory cell) */
 			case '<':
-				pointer--;
+				cell--;
+				/* Circular tape */
+				if (cell < 0) {
+						while (cell < 0) {
+							cell = cell + MAX_CELLS;
+						}
+					cell = cell % MAX_CELLS;
+				}
 				break;
+			
 			/* Increment the memory cell under the pointer */
 			case '+':
-				tape[pointer]++;
+				tape[cell]++;
 				break;
+			
 			/* Decrement the memory cell under the pointer */
 			case '-':
-				tape[pointer]--;
+				tape[cell]--;
 				break;
-			/* Output the character signified by the cell at the pointer */
+			
+			/* Output the character signified by the current memory cell */
 			case '.':
-				putchar(tape[pointer]);
+				putchar(tape[cell]);
 				break;
-			/* Input a character and store it in the cell at the pointer */
+			
+			/* Input a character and store it in the current memory cell */
 			case ',':
-				tape[pointer] = (int) getchar();
+				tape[cell] = (int) getchar();
 				break;
-			/* Jump past the matching ']' if the cell under the pointer is 0 */
+			
+			/* Jump past the matching ']' if the memory cell under the pointer holds 0 */
 			case '[':
-				if (tape[pointer] == 0) {
+				if (tape[cell] == 0) {
 					loop = 1;
 					while (loop > 0) {
 						c = chars[++char_pointer];
@@ -54,7 +72,8 @@ void bf_eval(char *chars) {
 					}
 				}
 				break;
-			/* Jump back to the matching '[' if the cell under the pointer is nonzero */
+			
+			/* Jump back to the matching '[' if the memory cell under the pointer holds a nonzero value */
 			case ']':
 				loop = 1;
 				while (loop > 0) {
