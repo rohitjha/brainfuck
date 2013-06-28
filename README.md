@@ -12,7 +12,7 @@ An interpreter for the Brainfuck programming language, written in C.
 
 Installation
 -----------
-To install, simply run 'make' at the command prompt. This will create the executable 'brainfuck'.
+To install, simply run 'make' at the command prompt. This will create the executable named 'bf'.
 
 
 Usage
