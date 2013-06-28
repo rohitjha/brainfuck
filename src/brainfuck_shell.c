@@ -5,7 +5,7 @@
 
 #include "brainfuck.h"
 
-#define USAGEMSG "Usage: brainfuck [options] <filename or code>\n\t-h  display this message\n\t-f  execute program in <filename>\n\t-c  run <code> directly\n\t-m  display tape memory\n"
+#define USAGEMSG "Usage: brainfuck [-f/-c] [-t] <filename or code>\n\t-h  display this message\n\t-f  execute program in <filename>\n\t-c  run <code> directly\n\t-t  display tape memory\n"
 
 /* Read the file and pass it to the brainfuck_eval() function */
 void bf_readfile(char *filename) {
@@ -31,7 +31,7 @@ void bf_readfile(char *filename) {
 		chars[pointer++] = (char) c;
 	fclose(file);
 
-	/* Run the code */
+	/* Evaluate the code */
 	bf_eval(chars);
 }
 
@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
 		else if (strcmp(argv[1], "-c") == 0)
 			bf_eval(argv[argc-1]);
 
-		if ( (strcmp(argv[1], "-m") == 0) || (strcmp(argv[2], "-m") == 0) ) {
+		if ( (strcmp(argv[1], "-t") == 0) || (strcmp(argv[2], "-t") == 0) ) {
 			int num;
 			printf ("Contents of which cells to display?\n\t[1] First 'n' cells\n\t[2] Cells in an inclusive range\n\t[3] All cells\n(Default [1]): ");
 			scanf ("%d", &num);
@@ -87,7 +87,7 @@ int main(int argc, char *argv[]) {
 			}
 
 			else {
-				printf ("Invalid response. Displaying contents of first 10 cells.\n");
+				printf ("Invalid response. Displaying contents of first 10 cells by default.\n");
 				bf_showtape(10);
 			}
 		}
@@ -105,8 +105,7 @@ int main(int argc, char *argv[]) {
 
 /* Sample Output:
 
-$ gcc -O3 -o brainfuck brainfuck.c brainfuck_shell.c
-$ ./brainfuck -f -m hello_world.bf 
+$ ./bf -f -m hello_world.bf 
 Hello World!
 Contents of which cells to display?
 	[1] First 'n' cells
@@ -128,13 +127,13 @@ Enter value of 'n': 10
 
 /* Sample Output:
 
-./brainfuck -c '++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.'
+./bf -c '++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.'
 Hello World!
 */
 
 /* Sample Output:
 
-$ ./brainfuck -c -m `cat hello_world.bf`
+$ ./bf -c -m `cat hello_world.bf`
 Hello World!
 Contents of which cells to display?
 	[1] First 'n' cells
