@@ -19,6 +19,6 @@ Usage
 -----
 To run the Hello World! example, type the following line:
 
-$ ./bf -f hello_world.bf 
+$ ./bf -f examples/hello_world.bf 
 
 Hello World!
