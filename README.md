@@ -24,7 +24,7 @@ $ make
 
 $ make install (as root)
 
-To deinstall/uninstall, run these commands:
+To deinstall/uninstall, run this command:
 
 $ make deinstall (again, as root)
 
