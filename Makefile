@@ -1,5 +1,5 @@
-bf: src/brainfuck.c src/brainfuck.h src/brainfuck_shell.c
-	gcc -O3 -o bf src/brainfuck.c src/brainfuck_shell.c
+bf: src/brainfuck.c src/brainfuck.h src/c_brainfuck.c
+	gcc -O3 -o bf src/brainfuck.c src/c_brainfuck.c
 
 clean:
 	rm -f bf
