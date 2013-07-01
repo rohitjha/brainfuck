@@ -17,7 +17,7 @@ void bf_readfile(char *filename) {
 	/* Get the size of the file */
 	file = fopen(filename, "r");
 	if (file == NULL) {
-		fprintf(stderr, "Error: failed to open %s!\n", filename);
+		fprintf(stderr, "Error: Failed to open %s!\n", filename);
 		exit(EXIT_FAILURE);
 	}
 	fseek(file, 0, SEEK_END);
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	else if((argc < 3) && (isatty(fileno(stdin))) == 1) {
-		printf("Error: invalid usage!\n%s", USAGEMSG);
+		fprintf(stderr, "Error: Invalid usage!\n%s", USAGEMSG);
 		return EXIT_FAILURE;
 	}
 
