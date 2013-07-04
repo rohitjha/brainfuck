@@ -39,7 +39,7 @@ Usage
 	To get the output "Hello World!" (without quotes).
 
 2. Passing a sequence of Brainfuck operators directly to the interpreter:
-	To execute a set of operations, such as >>+++. (which prints the content of the third cell), run the 'bf' program as:
+	To execute a set of operations, such as >>+++. (which prints the content of the third cell after incrementing the existing value by three), run the 'bf' program as:
 
 	$ bf -c '>>+++.'
 
