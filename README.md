@@ -52,3 +52,8 @@ Usage
 	$ bf -f -t examples/hello_world.bf
 
 	This will display the result and then ask for various choices for selecting which cells' contents are to be displayed.
+
+
+Help
+----
+E-mail: rohit305jha@gmail.com
