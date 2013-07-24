@@ -5,7 +5,7 @@
 
 #include "brainfuck.h"
 
-#define USAGEMSG "Usage: bf [-f/-c] [-t] <filename or code>\n\t-h  display this message\n\t-f  execute program in <filename>\n\t-c  run <code> directly\n\t-t  display tape memory\n"
+#define USAGEMSG "c-brainfuck, Version 0.4\nCopyright (c) Rohit Jha, 2013\n\nUsage: bf [-f/-c] [-t] <filename or code>\n\t-h  display this message\n\t-f  execute program in <filename>\n\t-c  run <code> directly\n\t-t  display tape memory\n"
 
 /* Read the file and pass it to the bf_eval() function */
 void bf_readfile(char *filename) {

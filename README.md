@@ -4,7 +4,7 @@ c-brainfuck
 An interpreter for the Brainfuck programming language, written in C.
 
 
-Version: 0.3
+Version: 0.4
 
 
 Features
@@ -22,11 +22,11 @@ For proper installation, run these commands at the command prompt:
 
 $ make
 
-$ make install (as root)
+$ make install (as root/superuser)
 
 To deinstall/uninstall, run this command:
 
-$ make deinstall (again, as root)
+$ make deinstall (again, as root/superuser)
 
 
 Usage
