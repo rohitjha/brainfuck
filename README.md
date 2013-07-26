@@ -4,7 +4,7 @@ c-brainfuck
 An interpreter for the Brainfuck programming language, written in C.
 
 
-Version: 0.4
+Version: 0.4.1
 
 
 Features
@@ -18,15 +18,17 @@ Features
 Installation
 -----------
 Simply running 'make' at the command prompt will create the executable named 'bf' in the current working directory.
-For proper installation, run these commands at the command prompt:
+For proper installation, run these three commands at the command prompt:
 
 $ make
 
 $ make install (as root/superuser)
 
-To deinstall/uninstall, run this command:
+$ make clean (to remove temporary files and the executable in the current directory)
 
-$ make deinstall (again, as root/superuser)
+To deinstall/uninstall, run this command as root/superuser:
+
+$ make deinstall
 
 
 Usage
