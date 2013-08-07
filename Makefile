@@ -16,5 +16,5 @@ clean:
 install:
 	cp ${TGT} ${TGT_LOC}
 
-deinstall:
+uninstall:
 	rm -f ${TGT_PATH}
