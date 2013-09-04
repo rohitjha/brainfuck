@@ -18,7 +18,7 @@ Features
 Installation
 -----------
 Simply running 'make' at the command prompt will create the executable named 'bf' in the current working directory.
-For proper installation, run these three commands at the command prompt:
+For proper installation, run these two commands at the command prompt:
 
 $ make
 
