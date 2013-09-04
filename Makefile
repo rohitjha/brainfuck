@@ -2,7 +2,7 @@
 CC=gcc
 
 # Flags/options to pass to CC
-CCFLAGS=-Wall -O3 -o
+CFLAGS=-Wall -O3 -o
 
 # C source files
 CSRC=src/brainfuck.c src/c_brainfuck.c
