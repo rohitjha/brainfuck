@@ -51,7 +51,6 @@ int main(int argc, char *argv[]) {
 	}
 
 	else if(isatty(fileno(stdin))) {
-		char ans;
 		int low;
 		int high;
 		

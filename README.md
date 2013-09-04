@@ -4,7 +4,7 @@ c-brainfuck
 An interpreter for the Brainfuck programming language, written in C.
 
 
-Version: 0.4.2
+Version: 0.4.3
 
 
 Features
@@ -24,9 +24,7 @@ $ make
 
 $ make install (as root/superuser)
 
-$ make clean (to remove temporary files and the executable in the current directory)
-
-To deinstall/uninstall, run this command as root/superuser:
+To uninstall, run this command as root/superuser:
 
 $ make uninstall
 

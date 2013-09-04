@@ -107,8 +107,6 @@ void bf_showtape(int n) {
 /* Display contents of tape cell numbers ranging from 'a' to 'b' */
 void bf_showtape_range(int a, int b) {
 	int i;
-	int low;
-	int high;
 
 	if (a < 0 || b < 0 || a > b || a > MAX_CELLS || b > MAX_CELLS) {
 		fprintf (stderr, "Error: invalid range(s)\nLower limit must be non-negative and upper limit must be less than %d\n", MAX_CELLS);
