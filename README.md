@@ -56,4 +56,6 @@ Usage
 
 Help
 ----
-E-mail: rohit305jha@gmail.com
+View the man page for c-brainfuck by typing 'man bf' at the command line.
+
+E-mail: rohit305jha@gmail.com (Rohit Jha)
