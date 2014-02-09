@@ -2,7 +2,7 @@
 #include <string.h>
 
 #ifndef BRAINFUCK_H
-	#include "brainfuck.h"
+#include "brainfuck.h"
 #endif
 
 int tape[MAX_CELLS];
