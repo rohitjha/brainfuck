@@ -5,7 +5,7 @@
 
 #include "brainfuck.h"
 
-#define USAGEMSG "c-brainfuck, Version 0.4.4\nCopyright (c) Rohit Jha, 2013\n\nUsage: bf [options] <filename or code>\n\t-h  display this message\n\t-f  execute program in <filename>\n\t-c  run <code> directly\n\t-t  display tape memory\n"
+#define USAGEMSG "c-brainfuck, Version 0.4.5\nCopyright (c) Rohit Jha, 2015\n\nUsage: bf [options] <filename or code>\n\t-h  display this message\n\t-f  execute program in <filename>\n\t-c  run <code> directly\n\t-t  display tape memory\n"
 
 /* Read the file and pass it to the bf_eval() function */
 void bf_readfile(char *filename) {
@@ -37,7 +37,7 @@ void bf_readfile(char *filename) {
 
 int main(int argc, char *argv[]) {
 	int i = 0;
-	char pipe[65536];	/* 64K tape memory */
+	char pipe[MAX_CELLS];	/* tape memory of size MAX_CELLS*/
 
 	/* Ensure proper usage */
 	if (argc < 2 || (strcmp(argv[1], "-h") == 0)) {
@@ -61,12 +61,12 @@ int main(int argc, char *argv[]) {
 
 		if ( (strcmp(argv[1], "-t") == 0) || (strcmp(argv[2], "-t") == 0) ) {
 			int num;
-			printf ("Contents of which cells to display?\n\t[1] First 'n' cells\n\t[2] Cells in an inclusive range\n\t[3] All cells\n(Default [1]): ");
+			printf ("Contents of which cells to display?\n\t[1] First few cells\n\t[2] Cells in an inclusive range\n\t[3] All cells\n(Default [1]): ");
 			scanf ("%d", &num);
 
 			if (num == 1) {
 				low = 0;
-				printf ("Enter value of 'n': ");
+				printf ("Enter the number of cells: ");
 				scanf ("%d", &high);
 
 				bf_showtape(high);
