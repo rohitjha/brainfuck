@@ -1,4 +1,4 @@
-c-brainfuck
+brainfuck
 ===========
 
 An interpreter for the Brainfuck programming language, written in C.
@@ -24,9 +24,9 @@ $ make
 
 \# make install (as root/superuser)
 
-To uninstall, run this command as root/superuser:
+To uninstall, run:
 
-\# make uninstall
+\# make uninstall (as root/superuser)
 
 
 Usage
