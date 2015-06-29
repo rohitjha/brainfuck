@@ -5,8 +5,6 @@
 
 #include "brainfuck.h"
 
-#define USAGEMSG "c-brainfuck, Version 0.4.5\nCopyright (c) Rohit Jha, 2015\n\nUsage: bf [options] <filename or code>\n\t-h  display this message\n\t-f  execute program in <filename>\n\t-c  run <code> directly\n\t-t  display tape memory\n"
-
 /* Read the file and pass it to the bf_eval() function */
 void bf_readfile(char *filename) {
 	FILE *file;
@@ -40,54 +38,39 @@ int main(int argc, char *argv[]) {
 	char pipe[MAX_CELLS];	/* tape memory of size MAX_CELLS*/
 
 	/* Ensure proper usage */
-	if (argc < 2 || (strcmp(argv[1], "-h") == 0)) {
+	if (argc < 2) {
 		printf(USAGEMSG);
 		return EXIT_FAILURE;
 	}
 
-	else if((argc < 3) && (isatty(fileno(stdin))) == 1) {
-		fprintf(stderr, "Error: Invalid usage!\n%s", USAGEMSG);
-		return EXIT_FAILURE;
-	}
-
-	else if(isatty(fileno(stdin))) {
-		int low;
-		int high;
-		
-		if (strcmp(argv[1], "-f") == 0)
-			bf_readfile(argv[argc-1]);
-		else if (strcmp(argv[1], "-c") == 0)
-			bf_eval(argv[argc-1]);
-
-		if ( (strcmp(argv[1], "-t") == 0) || (strcmp(argv[2], "-t") == 0) ) {
-			int num;
-			printf ("Contents of which cells to display?\n\t[1] First few cells\n\t[2] Cells in an inclusive range\n\t[3] All cells\n(Default [1]): ");
-			scanf ("%d", &num);
-
-			if (num == 1) {
-				low = 0;
-				printf ("Enter the number of cells: ");
-				scanf ("%d", &high);
-
-				bf_showtape(high);
-			}
-
-			else if (num == 2) {
-				printf ("Enter lower limit: ");
-				scanf ("%d", &low);
-				printf ("Enter upper limit: ");
-				scanf ("%d", &high);
-
-				bf_showtape_range(low,high);
-			}
-
-			else if (num == 3) {
-				bf_showtape(MAX_CELLS);
-			}
-
-			else {
-				printf ("Invalid response. Displaying contents of first 10 cells by default.\n");
-				bf_showtape(10);
+	if(isatty(fileno(stdin))) {
+		int opt;
+		int limit;
+			
+		while((opt = getopt(argc, argv, "hf:c:t:")) != -1) {
+			switch(opt) {
+				case 'h':
+					printf(USAGEMSG);
+					return EXIT_SUCCESS;
+				case 'f':
+					bf_readfile(optarg);
+					break;
+				case 'c':
+					bf_eval(optarg);
+					break;
+				case 't':
+					limit = atoi(optarg);
+					if (limit >= 0) {
+						bf_showtape_range(0, limit);
+					}
+					else {
+						fprintf(stderr, "The number of tape memory locations to be displayed should be less than 65536.\n");
+						return EXIT_FAILURE;
+					}
+					break;
+				case '?':
+					printf("Please type bf -h for help.\n");
+					break;
 			}
 		}
 	}
@@ -104,24 +87,21 @@ int main(int argc, char *argv[]) {
 
 /* Sample Output:
 
-$ bf -f -t hello_world.bf 
+$ bf -h
+c-brainfuck, Version 0.5
+Copyright (c) Rohit Jha, 2015
+
+Usage: bf [options]
+	-h		display this help message
+	-f <file>	execute program in <file>
+	-c <code>	run brainfuck code in the <code> text
+	-t <limit>	display tape memory upto <limit> cells
+*/
+
+/* Sample Output:
+
+$ bf -f c-brainfuck/examples/hello_world.bf 
 Hello World!
-Contents of which cells to display?
-	[1] First 'n' cells
-	[2] Cells in an inclusive range
-	[3] All cells
-(Default [1]): 1
-Enter value of 'n': 10
-[0]  ->  0
-[1]  ->  87
-[2]  ->  100
-[3]  ->  33
-[4]  ->  10
-[5]  ->  0
-[6]  ->  0
-[7]  ->  0
-[8]  ->  0
-[9]  ->  0
 */
 
 /* Sample Output:
@@ -132,14 +112,8 @@ Hello World!
 
 /* Sample Output:
 
-$ bf -c -t `cat hello_world.bf`
+$ bf -f c-brainfuck/examples/hello_world.bf -t 9
 Hello World!
-Contents of which cells to display?
-	[1] First 'n' cells
-	[2] Cells in an inclusive range
-	[3] All cells
-(Default [1]): 1
-Enter value of 'n': 7
 [0]  ->  0
 [1]  ->  87
 [2]  ->  100
@@ -147,4 +121,7 @@ Enter value of 'n': 7
 [4]  ->  10
 [5]  ->  0
 [6]  ->  0
+[7]  ->  0
+[8]  ->  0
+[9]  ->  0
 */

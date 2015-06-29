@@ -8,17 +8,13 @@ programming language written in C.
 [\-h]
 .PP
 .B bf
-\-f [\-t] \fIfile\fP
+\-f \fIfile\fR [\-t \fIcells]\fP
 .PP
 .B bf
-\-c [\-t] \fIoperators\fP
+\-c \fIoperators\fR [\-t \fIcells]\fP
 .SH DESCRIPTION
 .PP
-\fIbf\fP is an interpreter for the Brainfuck programming
-language. Written in C, it can take Brainfuck programs as
-input in the form of files or directly as a sequence of
-operators, passed as argument, and return the results to
-the standard output.
+\fIbf\fP is an interpreter for the Brainfuck programming language. Written in C, it can take Brainfuck programs as input in the form of files or directly as a sequence of operators, passed as argument, and return the results to the standard output.
 .PP
 .SH OPTIONS
 .PP
@@ -32,31 +28,21 @@ Executes program passed as the final argument.
 .PP
 .TP
 .BI \-c
-Executes sequence of operators passed as the
-final argument (in a string format, enclosed
-within a pair of single quotes)
+Executes sequence of operators passed as the final argument (in a string format, enclosed within a pair of single quotes)
 .PP
 .TP
 .BI \-t
-Displays contents of the tape memory. This option
-cannot be used on its own, but only along with the
--f or -c options.
+Displays contents of the tape memory. This option cannot be used on its own, but only along with the -f or -c options.
 .SH EXAMPLES
 1. Running a Brainfuck program, stored in a file:
-        To run the Hello World! example, which is
-available as 'hello_world.bf' in the examples
-directory, run the following line:
+        To run the Hello World! example, which is available as 'hello_world.bf' in the examples directory, run the following line:
 
         $ bf -f examples/hello_world.bf
 
-        To get the output "Hello World!" (without quotes).
+        Which gives the output "Hello World!" (without quotes).
 
-2. Passing a sequence of Brainfuck operators directly to
-the interpreter:
-        To execute a set of operations, such as >>+++.
-(which prints the content of the third cell after
-incrementing the existing value by three), run the 'bf'
-program as:
+2. Passing a sequence of Brainfuck operators directly to the interpreter:
+        To execute a set of operations, such as >>+++. (which prints the content of the third cell after incrementing the existing value by three), run the 'bf' program as:
 
         $ bf -c '>>+++.'
 
@@ -65,45 +51,22 @@ program as:
 
 4. Running a program and then obtaining contents of tape
 cells:
-        Run a program, as shown in either case 1 or case 2,
-with the only change being the addition of a '-t' option:
+        Run a program, as shown in either case 1 or case 2, with the only change being the addition of a '-t' option:
 
-        $ bf -f -t examples/hello_world.bf
+        $ bf -f examples/hello_world.bf -t 10
 
-        This will display the result and then ask for
-various choices for selecting which cells' contents are
-to be displayed.
+        This will display the result and then print contents of the memory tape from cell 0 to cell 10.
 .SH COPYRIGHT
-Copyright (c)2015, Rohit Jha
+Copyright (c) 2015, Rohit Jha
 
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or
-without modification, are permitted provided that the
-following conditions are met:
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
-    * Redistributions of source code must retain the above
-      copyright notice, this list of conditions and the 
-      following disclaimer.
+    * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the
-      above copyright notice, this list of conditions
-      and the following disclaimer in the documentation
-      and/or other materials provided with the distribution.
+    * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
-CONTRIBUTORS AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
-OF SUCH DAMAGE.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 .SH AUTHOR
 Rohit Jha

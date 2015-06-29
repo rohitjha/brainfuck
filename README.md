@@ -4,7 +4,7 @@ c-brainfuck
 An interpreter for the Brainfuck programming language, written in C.
 
 
-Version: 0.4.5
+Version: 0.5
 
 
 Features
@@ -49,9 +49,9 @@ Usage
 4. Running a program and then obtaining contents of tape cells:
 	Run a program, as shown in either case 1 or case 2, with the only change being the addition of a '-t' option:
 
-	$ bf -f -t examples/hello_world.bf
+	$ bf -f examples/hello_world.bf -t 10
 
-	This will display the result and then ask for various choices for selecting which cells' contents are to be displayed.
+	This will display the result and then display the contents of cells 0 through 10.
 
 
 Help

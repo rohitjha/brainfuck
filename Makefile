@@ -20,7 +20,7 @@ TGT_LOC=/usr/bin
 MAN_SRC=doc/bf.1
 
 # GROFF-ed man page
-G_MAN=bf.1p
+G_MAN=bf.1
 
 # Where to install the man page
 MAN_LOC=/usr/share/man/man1
@@ -36,8 +36,9 @@ install:
 	chmod a+x ${TGT_LOC}/${TGT};
 	chmod og-w ${TGT_LOC}/${TGT};
 	rm -f ${TGT};
-	groff -man -Tascii ${MAN_SRC} > ${G_MAN};
-	gzip -c ${G_MAN} > ${G_MAN}.gz
+	groff -mandoc -T utf8 ${MAN_SRC} > ${G_MAN};
+	#man -l ${MAN_SRC} > ${G_MAN};
+	gzip -c  ${G_MAN} > ${G_MAN}.gz
 	cp ${G_MAN}.gz ${MAN_LOC}
 	rm -f ${G_MAN} ${G_MAN}.gz
 
