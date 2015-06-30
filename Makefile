@@ -37,7 +37,6 @@ install:
 	chmod og-w ${TGT_LOC}/${TGT};
 	rm -f ${TGT};
 	groff -mandoc -T utf8 ${MAN_SRC} > ${G_MAN};
-	#man -l ${MAN_SRC} > ${G_MAN};
 	gzip -c  ${G_MAN} > ${G_MAN}.gz
 	cp ${G_MAN}.gz ${MAN_LOC}
 	rm -f ${G_MAN} ${G_MAN}.gz
