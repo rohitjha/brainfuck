@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
 #include "brainfuck.h"
 
 /* Read the file and pass it to the bf_eval() function */
@@ -33,8 +32,6 @@ void bf_readfile(char *filename) {
 }
 
 int main(int argc, char *argv[]) {
-	int i = 0;
-	char pipe[MAX_CELLS];	/* tape memory of size MAX_CELLS*/
 
 	/* Ensure proper usage */
 	if (argc < 2) {
@@ -45,8 +42,8 @@ int main(int argc, char *argv[]) {
 	if(isatty(fileno(stdin))) {
 		int opt;
 		int limit;
-			
-		while((opt = getopt(argc, argv, "hf:c:t:")) != -1) {
+
+		while((opt = getopt(argc, argv, "hf:e:t:")) != -1) {
 			switch(opt) {
 				case 'h':
 					printf(USAGEMSG);
@@ -54,7 +51,7 @@ int main(int argc, char *argv[]) {
 				case 'f':
 					bf_readfile(optarg);
 					break;
-				case 'c':
+				case 'e':
 					bf_eval(optarg);
 					break;
 				case 't':
@@ -76,6 +73,8 @@ int main(int argc, char *argv[]) {
 
 	/* Write operations to pipe and evaluate */
 	else {
+		int i = 0;
+		char pipe[MAX_CELLS];	/* tape memory of size MAX_CELLS*/
 		while(-1 != (pipe[i++] = getchar()));
 		bf_eval(pipe);
 	}
@@ -87,13 +86,13 @@ int main(int argc, char *argv[]) {
 /* Sample Output:
 
 $ bf -h
-c-brainfuck, Version 0.5
+c-brainfuck, Version 0.5.1
 Copyright (c) Rohit Jha, 2015
 
 Usage: bf [options]
 	-h		display this help message
 	-f <file>	execute program in <file>
-	-c <code>	run brainfuck code in the <code> text
+	-e <code>	evaluate brainfuck code in the <code> text
 	-t <limit>	display tape memory upto <limit> cells
 */
 
@@ -105,7 +104,7 @@ Hello World!
 
 /* Sample Output:
 
-$ bf -c '++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.'
+$ bf -e '++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.'
 Hello World!
 */
 

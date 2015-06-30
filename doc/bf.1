@@ -27,12 +27,12 @@ Displays the help content, including version.
 Executes program passed as the final argument.
 .PP
 .TP
-.BI \-c
+.BI \-e
 Executes sequence of operators passed as the final argument (in a string format, enclosed within a pair of single quotes)
 .PP
 .TP
 .BI \-t
-Displays contents of the tape memory. This option cannot be used on its own, but only along with the -f or -c options.
+Displays contents of the tape memory. This option cannot be used on its own, but only along with the -f or -e options.
 .SH EXAMPLES
 1. Running a Brainfuck program, stored in a file:
         To run the Hello World! example, which is available as 'hello_world.bf' in the examples directory, run the following line:
@@ -44,7 +44,7 @@ Displays contents of the tape memory. This option cannot be used on its own, but
 2. Passing a sequence of Brainfuck operators directly to the interpreter:
         To execute a set of operations, such as >>+++. (which prints the content of the third cell after incrementing the existing value by three), run the 'bf' program as:
 
-        $ bf -c '>>+++.'
+        $ bf -e '>>+++.'
 
 3. Displaying help:
         $ bf -h

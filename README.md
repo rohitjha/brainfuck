@@ -4,7 +4,7 @@ brainfuck
 An interpreter for the Brainfuck programming language, written in C.
 
 
-Version: 0.5
+Version: 0.5.1
 
 
 Features
@@ -41,7 +41,7 @@ Usage
 2. Passing a sequence of Brainfuck operators directly to the interpreter:
 	To execute a set of operations, such as >>+++. (which prints the content of the third cell after incrementing the existing value by three), run the 'bf' program as:
 
-	$ bf -c '>>+++.'
+	$ bf -e '>>+++.'
 
 3. Displaying help:
 	$ bf -h
