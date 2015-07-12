@@ -1,7 +1,7 @@
 brainfuck
 ===========
 
-An interpreter for the Brainfuck programming language, written in C.
+An interpreter for the Brainfuck programming language written in C.
 
 
 Version: 0.5.1
@@ -10,7 +10,7 @@ Version: 0.5.1
 Features
 --------
 1. Circular memory tape of size 64KB
-2. Tape cells can store 32-bit signed integers
+2. Tape cells can store signed integers
 3. Can take Brainfuck programs as input in the form of files or directly as sequence of operators, passed as argument.
 4. Sample Brainfuck programs can be found in the 'examples' directory.
 
@@ -56,6 +56,6 @@ Usage
 
 Help
 ----
-View the man page for c-brainfuck by typing 'man bf' at the command line.
+View the man page for brainfuck by typing 'man bf' at the command line.
 
 E-mail: rohit305jha@gmail.com (Rohit Jha)
