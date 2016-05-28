@@ -10,32 +10,33 @@ int tape[MAX_CELLS];
 /* Evaluate operators that are passed in the form of a character array */
 void bf_eval(char *chars) {
 	char c;
-	int cell = 0;
-	int char_pointer = 0;
-	int loop = 0;
+	uint32_t cell = 0;
+	uint32_t char_pointer = 0;
+	uint32_t loop = 0;
+
+	uint32_t size = strlen(chars);
 
 	/* Loop through all character in the character array */
-	while (char_pointer < strlen(chars)) {
+	while (char_pointer < size) {
 		switch (chars[char_pointer]) {
 			
 			/* Move the pointer to the right (next memory cell) */
 			case '>':
-				cell++;
-				/* Circular tape */
-				if (cell >= MAX_CELLS) {
-					cell = cell % MAX_CELLS;
+				if (cell < MAX_CELLS - 1) {
+					cell++;
+				}
+				else if (cell == MAX_CELLS - 1) {
+					cell = 0;
 				}
 				break;
 			
 			/* Move the pointer to the left (previous memory cell) */
 			case '<':
-				cell--;
-				/* Circular tape */
-				if (cell < 0) {
-						while (cell < 0) {
-							cell = cell + MAX_CELLS;
-						}
-					cell = cell % MAX_CELLS;
+				if (cell == 0) {
+					cell = MAX_CELLS - 1;
+				}
+				else {
+					cell--;
 				}
 				break;
 			
@@ -91,28 +92,32 @@ void bf_eval(char *chars) {
 }
 
 /* Display contents of the first 'n' cells of the tape */
-void bf_showtape(int n) {
+void bf_showtape(uint32_t n) {
 	int i;
 	int limit;
 
-	if (n < 0 || n > MAX_CELLS)
+	if (n > MAX_CELLS)
 		limit = MAX_CELLS;
 	else
 		limit = n;
 
+	printf ("\nTape Contents:\n");
+
 	for (i = 0; i < limit; i++)
-			printf ("[%d]  ->  %d\n", i, tape[i]);
+			printf ("[%d]\t-> %d\n", i, tape[i]);
 }
 
 /* Display contents of tape cell numbers ranging from 'a' to 'b' */
-void bf_showtape_range(int a, int b) {
+void bf_showtape_range(uint32_t a, uint32_t b) {
 	int i;
 
-	if (a < 0 || b < 0 || a > b || a > MAX_CELLS || b > MAX_CELLS) {
+	if (a > b || a > MAX_CELLS || b > MAX_CELLS) {
 		fprintf (stderr, "Error: invalid range(s)\nThe upper memory tape limit must be less than %d\n", MAX_CELLS);
 	}
 
 	else {
+		printf ("\nTape Contents:\n");
+
 		for (i = a; i <= b; i++)
 			printf ("[%d]  ->  %d\n", i, tape[i]);
 	}

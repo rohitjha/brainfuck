@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
 						bf_showtape_range(0, limit);
 					}
 					else {
-						fprintf(stderr, "The number of tape memory locations to be displayed should be less than 65536.\n");
+						fprintf(stderr, "The number of tape memory locations to be displayed should be between 0 and 65535.\n");
 						return EXIT_FAILURE;
 					}
 					break;

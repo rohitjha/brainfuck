@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 #ifndef BRAINFUCK_H
 #define BRAINFUCK_H
 
@@ -9,9 +11,9 @@
 void bf_eval(char *);
 
 /* Diplaying the specified number of tape entries */
-void bf_showtape(int);
+void bf_showtape(uint32_t);
 
 /* Displaying the contents of the tape elements specified by the range */
-void bf_showtape_range(int, int);
+void bf_showtape_range(uint32_t, uint32_t);
 
 #endif
