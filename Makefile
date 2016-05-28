@@ -1,8 +1,9 @@
 # Select C compiler
-CC=gcc
+CC=clang
+#CC=gcc
 
 # Flags/options to pass to CC
-CFLAGS=-Wall -O3 -o
+CFLAGS=-std=gnu99 -Wall -O3 -o
 
 # C source files
 CSRC=src/brainfuck.c src/c_brainfuck.c

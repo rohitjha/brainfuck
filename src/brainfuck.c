@@ -5,7 +5,7 @@
 #include "brainfuck.h"
 #endif
 
-int tape[MAX_CELLS];
+uint32_t tape[MAX_CELLS];
 
 /* Evaluate operators that are passed in the form of a character array */
 void bf_eval(char *chars) {
@@ -14,7 +14,7 @@ void bf_eval(char *chars) {
 	uint32_t char_pointer = 0;
 	uint32_t loop = 0;
 
-	uint32_t size = strlen(chars);
+	uint32_t size = strnlen(chars, MAX_BUFFER);
 
 	/* Loop through all character in the character array */
 	while (char_pointer < size) {
@@ -57,7 +57,13 @@ void bf_eval(char *chars) {
 			
 			/* Input a character and store it in the current memory cell */
 			case ',':
-				tape[cell] = (int) getchar();
+				;
+				char input;
+				if(!scanf("%c", &input)) {
+					fprintf(stderr, "Unable to read input\n");
+					break;
+				}
+				tape[cell] = (uint32_t) input;
 				break;
 			
 			/* Jump past the matching ']' if the memory cell under the pointer holds 0 */
@@ -93,15 +99,15 @@ void bf_eval(char *chars) {
 
 /* Display contents of the first 'n' cells of the tape */
 void bf_showtape(uint32_t n) {
-	int i;
-	int limit;
+	uint32_t i;
+	uint32_t limit;
 
 	if (n > MAX_CELLS)
 		limit = MAX_CELLS;
 	else
 		limit = n;
 
-	printf ("\nTape Contents:\n");
+	fprintf (stdout, "\nTape Contents:\n");
 
 	for (i = 0; i < limit; i++)
 			printf ("[%d]\t-> %d\n", i, tape[i]);
@@ -109,14 +115,14 @@ void bf_showtape(uint32_t n) {
 
 /* Display contents of tape cell numbers ranging from 'a' to 'b' */
 void bf_showtape_range(uint32_t a, uint32_t b) {
-	int i;
+	uint32_t i;
 
 	if (a > b || a > MAX_CELLS || b > MAX_CELLS) {
 		fprintf (stderr, "Error: invalid range(s)\nThe upper memory tape limit must be less than %d\n", MAX_CELLS);
 	}
 
 	else {
-		printf ("\nTape Contents:\n");
+		fprintf (stdout, "\nTape Contents:\n");
 
 		for (i = a; i <= b; i++)
 			printf ("[%d]  ->  %d\n", i, tape[i]);

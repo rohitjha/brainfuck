@@ -4,7 +4,7 @@ brainfuck
 An interpreter for the Brainfuck programming language written in C.
 
 
-Version: 0.5.1
+Version: 0.5.2
 
 
 Features

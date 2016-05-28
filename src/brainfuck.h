@@ -4,6 +4,7 @@
 #define BRAINFUCK_H
 
 #define MAX_CELLS 65536
+#define MAX_BUFFER 65536
 
 #define USAGEMSG "brainfuck, Version 0.5.1\nCopyright (c) Rohit Jha, 2015\n\nUsage: bf [options]\n\t-h\t\tdisplay this help message\n\t-f <file>\texecute program in <file>\n\t-e <code>\tevaluate brainfuck code in the <code> text\n\t-t <limit>\tdisplay tape memory upto <limit> cells\n"
 

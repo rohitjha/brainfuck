@@ -1,30 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include "brainfuck.h"
 
 /* Read the file and pass it to the bf_eval() function */
 void bf_readfile(char *filename) {
 	FILE *file;
-	int c;
-	int pointer = 0;
-	int size = 0;
+	//int c;
+	//int pointer = 0;
+	uint32_t size = 0;
 
-	/* Get the size of the file */
+	/* Get the size of the file */	
 	file = fopen(filename, "r");
 	if (file == NULL) {
 		fprintf(stderr, "Error: Failed to open %s!\n", filename);
 		exit(EXIT_FAILURE);
 	}
+	
 	fseek(file, 0, SEEK_END);
 	size = ftell(file);
 	fseek(file, 0, SEEK_SET);
 
-	char chars[size];
-
 	/* Place each character from the file into the array */
-	while ((c = fgetc(file)) != EOF)
-		chars[pointer++] = (char) c;
+	char* chars = NULL;
+	chars = malloc((size + 1) * sizeof(*chars));
+	if(!fread(chars, size, 1, file)) {
+		fprintf(stderr, "Error: Unable to read %s\n", filename);
+		exit(EXIT_FAILURE);
+	}
+	chars[size] = '\0';
+	
+	/* Close the file */
 	fclose(file);
 
 	/* Evaluate the code */
@@ -35,18 +42,18 @@ int main(int argc, char *argv[]) {
 
 	/* Ensure proper usage */
 	if (argc < 2) {
-		printf(USAGEMSG);
+		fprintf(stdout, USAGEMSG);
 		return EXIT_FAILURE;
 	}
 
 	if(isatty(fileno(stdin))) {
-		int opt;
-		int limit;
+		uint32_t  opt;
+		uint32_t limit;
 
 		while((opt = getopt(argc, argv, "hf:e:t:")) != -1) {
 			switch(opt) {
 				case 'h':
-					printf(USAGEMSG);
+					fprintf(stdout, USAGEMSG);
 					return EXIT_SUCCESS;
 				case 'f':
 					bf_readfile(optarg);
@@ -56,7 +63,7 @@ int main(int argc, char *argv[]) {
 					break;
 				case 't':
 					limit = atoi(optarg);
-					if (limit >= 0) {
+					if (limit <= MAX_CELLS) {
 						bf_showtape_range(0, limit);
 					}
 					else {
@@ -65,7 +72,7 @@ int main(int argc, char *argv[]) {
 					}
 					break;
 				case '?':
-					printf("Please type bf -h for help.\n");
+					fprintf(stdout, "Please type bf -h for help.\n");
 					break;
 			}
 		}
@@ -73,9 +80,13 @@ int main(int argc, char *argv[]) {
 
 	/* Write operations to pipe and evaluate */
 	else {
-		int i = 0;
-		char pipe[MAX_CELLS];	/* tape memory of size MAX_CELLS*/
-		while(-1 != (pipe[i++] = getchar()));
+		/* tape memory of size MAX_CELLS*/
+		char* pipe = NULL;
+		pipe = (char*) malloc(MAX_CELLS * sizeof(char));
+
+		if(!fgets(pipe, MAX_CELLS, stdin)) {
+			fprintf(stderr, "Unable to read into tape\n");
+		}
 		bf_eval(pipe);
 	}
 
