@@ -1,112 +1,179 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
+#include <getopt.h>
 #include "brainfuck.h"
 
-/* Read the file and pass it to the bf_eval() function.
- * Update: Now this function read dynamic and filter the input.
- *         Return 1 on success, and 0 on error.
- */
-int bf_readfile(char *filename) {
-	size_t n = 0, sz = 4;
-	char* chars = malloc(sz);
-	if(chars == NULL) {
-		perror("Can't allocate memory");
-		return 0;
-	}
+static int shlp = 0, sver = 0;
 
-	FILE* f = fopen(filename, "r");
-	if(f == NULL) {
-		free(chars);
-		perror("Can't open file");
-		return 0;
+static struct option opts[] = {
+	{"file",        required_argument, 0, 'f'},
+	{"eval",        required_argument, 0, 'e'},
+	{"interpreter", no_argument,       0, 'i'},
+	{"filter",      required_argument, 0, 'F'},
+	{"balance",     required_argument, 0, 'h'},
+	{"help",        no_argument,   &shlp,  1 },
+	{"version",     no_argument,   &sver,  1 },
+	{0, 0, 0, 0}
+};
+
+char* bf_filter(FILE* f)
+{
+	size_t n = 0, cp = 4;
+	char* out = malloc(cp);
+	if(out == NULL) {
+		perror("Can't allocate memory");
+		return NULL;
 	}
 
 	char c, *r = NULL;
+
 	while((c = fgetc(f)) != EOF) {
 		if((r = strchr("<>+-[].,", c))) {
-			if(n == sz) {
-				sz *= 2;
-				void* t = realloc(chars, sz);
+			if(n == cp) {
+				cp *= 2;
+				void* t = realloc(out, cp);
 				if(t == NULL) {
-					free(chars);
-					fclose(f);
+					free(out);
 					perror("Error allocating memory");
-					return 0;
+					return NULL;
 				}
-				chars = t;
+				out = t;
 			}
-			chars[n++] = *r;
+			out[n++] = *r;
 		}
 	}
-	fclose(f);
 
-	bf_eval(chars);
-	free(chars);
+	if(n != cp) {
+		void* t = realloc(out, n+1);
+		if(t == NULL) {
+			free(out);
+			perror("Error allocating memory");
+			return NULL;
+		}
+		out = t;
+		out[n] = 0;
+	}
 
-	return 1;
+	return out;
 }
 
+void showhelp(int);
+void showversion(void);
+
 int main(int argc, char *argv[]) {
+	int c, i;
+	char* code;
+	FILE* f;
 
-	/* Ensure proper usage */
-	if (argc < 2) {
-		fprintf(stdout, USAGEMSG);
-		return EXIT_FAILURE;
+	while(1) {
+		c = getopt_long(argc, argv, "if:e:F:b:", opts, &i);
+
+		if(c == -1) break;
+
+		if(shlp) {
+			showhelp(EXIT_SUCCESS);
+		}
+		if(sver) {
+			showversion();
+		}
+
+		switch(c) {
+			case 'i':
+				/* TODO: An interpreter... */
+				break;
+			case 'f':
+				f = fopen(optarg, "r");
+				if(f == NULL) {
+					perror("Can't open file");
+					exit(EXIT_FAILURE);
+				}
+				code = bf_filter(f);
+				fclose(f);
+				if(code == NULL) {
+					exit(EXIT_FAILURE);
+				}
+				bf_eval(code);
+				free(code);
+				break;
+			case 'e':
+				bf_eval(optarg);
+				break;
+			case 'F':
+				f = fopen(optarg, "r");
+				if(f == NULL) {
+					perror("Can't open file");
+					exit(EXIT_FAILURE);
+				}
+				code = bf_filter(f);
+				fclose(f);
+				if(code == NULL) {
+					exit(EXIT_FAILURE);
+				}
+				puts(code);
+				free(code);
+				break;
+			case 'b':
+				/* TODO: A function that balace brainfuck code... */
+				break;
+			case '?':
+				showhelp(EXIT_FAILURE);
+				break;
+		}
 	}
 
-	if(isatty(fileno(stdin))) {
-		uint32_t  opt;
-		uint32_t limit;
-
-		while((opt = getopt(argc, argv, "hf:e:t:")) != -1) {
-			switch(opt) {
-				case 'h':
-					fprintf(stdout, USAGEMSG);
-					exit(EXIT_SUCCESS);
-				case 'f':
-					if(!bf_readfile(optarg)) {
-						exit(EXIT_FAILURE);
-					}
-					break;
-				case 'e':
-					bf_eval(optarg);
-					break;
-				case 't':
-					limit = atoi(optarg);
-					if (limit <= MAX_CELLS) {
-						bf_showtape_range(0, limit);
-					}
-					else {
-						fprintf(stderr, "The number of tape memory locations to be displayed should be between 0 and 65535.\n");
-						exit(EXIT_FAILURE);
-					}
-					break;
-				case '?':
-					fprintf(stdout, "Please type bf -h for help.\n");
-					break;
+	if (optind < argc) {
+    	while(optind < argc) {
+    		f = fopen(argv[optind++], "r");
+			if(f == NULL) {
+				perror("Can't open file");
+				exit(EXIT_FAILURE);
 			}
-		}
-	}
-
-	/* Write operations to pipe and evaluate */
-	else {
-		/* tape memory of size MAX_CELLS*/
-		char* pipe = NULL;
-		pipe = (char*) malloc(MAX_CELLS * sizeof(char));
-
-		if(!fgets(pipe, MAX_CELLS, stdin)) {
-			fprintf(stderr, "Unable to read into tape\n");
-		}
-		bf_eval(pipe);
-
-		free(pipe);
-	}
+			code = bf_filter(f);
+			fclose(f);
+			if(code == NULL) {
+				exit(EXIT_FAILURE);
+			}
+			bf_eval(code);
+			free(code);
+			break;
+    	}
+    }
 
 	return EXIT_SUCCESS;
 }
 
+void showhelp(int status)
+{
+	if(status != EXIT_SUCCESS) {
+		fputs("Please type bf -h for help.\n", stderr);
+	} else {
+		fputs(
+			"bf [options] FILENAME...\n\n"
+			"Options:\n"
+			"    -f --file <file>    Execute program in <file>\n"
+			"    -e --eval <code>    Evaluate Brainfuck code in <code>\n"
+			"    -i --interpreter    Branfuck interative interpreter (Unimplemented)\n"
+			"    -F --filter <file>  Filter a file to only Brainfuck Characters\n"
+			"    -b --balance <file> Balance '<', '>', '+' and '-' characters\n"
+			"                        from <file> (Unimplemented)\n"
+			"       --help           Show this help message and exit\n"
+			"       --version        Show version info and exit\n\n", stdout);
+	}
+
+	exit(status);
+}
+
+void showversion(void)
+{
+	fputs(
+		"c-brainfuck, Version 0.5.3\n"
+		"Copyright (c) Rohit Jha, 2015-2017\n"
+		"rohit305jha@gmail.com\n\n"
+		"This is free and unencumbered software released into the public domain.\n\n"
+		"Fork me on github https://github.com/rohitjha/brainfuck\n", stdout);
+	exit(EXIT_SUCCESS);
+}
 
 /* Sample Output:
 

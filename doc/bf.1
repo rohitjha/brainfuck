@@ -5,13 +5,13 @@ programming language written in C.
 .SH SYNOPSIS
 .PP
 .B bf
-[\-h]
+[\--help]
 .PP
 .B bf
-\-f \fIfile\fR [\-t \fIcells]\fP
+\fIfile\fR
 .PP
 .B bf
-\-c \fIoperators\fR [\-t \fIcells]\fP
+\-\-eval \fIoperators\fR
 .SH DESCRIPTION
 .PP
 \fIbf\fP is an interpreter for the Brainfuck programming language. Written in C, it can take Brainfuck programs as input in the form of files or directly as a sequence of operators, passed as argument, and return the results to the standard output.
@@ -19,20 +19,29 @@ programming language written in C.
 .SH OPTIONS
 .PP
 .TP
-.BI \-h
-Displays the help content, including version.
-.PP
-.TP
 .BI \-f
-Executes program passed as the final argument.
+\-\-file [\fIFilename\fR]
+Read and excute \fIFilename\fR.
 .PP
 .TP
 .BI \-e
-Executes sequence of operators passed as the final argument (in a string format, enclosed within a pair of single quotes)
+\-\-eval [\fICode\fR]
+Evaluate Brainfuck code in \fICode\fR.
 .PP
 .TP
-.BI \-t
-Displays contents of the tape memory. This option cannot be used on its own, but only along with the -f or -e options.
+.BI \-i
+\-\-interpreter
+Run Branfuck interative interpreter (Unimplemented)
+.PP
+.TP
+.BI \-F
+\-\-filter [\fIFilename\fR]
+Read \fIFilename\fR and remove every character expect '<', '>', '+', '-', '[' and ']' and print the result to the standard output. ("< <>> ++ - [-]" is translated to "<<>>++-[-]")
+.PP
+.TP
+.BI \-b
+\-\-balance [\fIFilename\fR]
+Read \fIFilename\fR and balance '<', '>', '+' and '-' characters. ("++++--" is balanced as "++" and so on)
 .SH EXAMPLES
 1. Running a Brainfuck program, stored in a file:
         To run the Hello World! example, which is available as 'hello_world.bf' in the examples directory, run the following line:
