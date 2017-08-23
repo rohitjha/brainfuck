@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #ifndef BRAINFUCK_H
@@ -99,6 +100,8 @@ void bf_eval(char *chars) {
 
 /* Display contents of the first 'n' cells of the tape */
 void bf_showtape(uint32_t n) {
+	if(tape == NULL) return;
+
 	uint32_t i;
 	uint32_t limit;
 
@@ -115,6 +118,8 @@ void bf_showtape(uint32_t n) {
 
 /* Display contents of tape cell numbers ranging from 'a' to 'b' */
 void bf_showtape_range(uint32_t a, uint32_t b) {
+	if(tape == NULL) return;
+
 	uint32_t i;
 
 	if (a > b || a > MAX_CELLS || b > MAX_CELLS) {
