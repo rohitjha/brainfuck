@@ -3,10 +3,10 @@ CC=clang
 #CC=gcc
 
 # Flags/options to pass to CC
-CFLAGS=-std=gnu99 -Wall -O3 -o
+CFLAGS=-std=gnu99 -Wall -O2 -o
 
 # C source files
-CSRC=src/brainfuck.c src/c_brainfuck.c
+CSRC=src/brainfuck.c src/main.c
 
 # C header files
 HEADERS=src/brainfuck.h

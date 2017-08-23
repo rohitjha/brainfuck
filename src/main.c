@@ -1,41 +1,51 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
+#include <unistd.h>
 #include "brainfuck.h"
 
-/* Read the file and pass it to the bf_eval() function */
-void bf_readfile(char *filename) {
-	FILE *file;
-	//int c;
-	//int pointer = 0;
-	uint32_t size = 0;
-
-	/* Get the size of the file */	
-	file = fopen(filename, "r");
-	if (file == NULL) {
-		fprintf(stderr, "Error: Failed to open %s!\n", filename);
-		exit(EXIT_FAILURE);
+/* Read the file and pass it to the bf_eval() function.
+ * Update: Now this function read dynamic and filter the input.
+ *         Return 1 on success, and 0 on error.
+ */
+int bf_readfile(char *filename) {
+	size_t n = 0, sz = 4;
+	char* chars = malloc(sz);
+	if(chars == NULL) {
+		perror("Can't allocate memory");
+		return 0;
 	}
-	
-	fseek(file, 0, SEEK_END);
-	size = ftell(file);
-	fseek(file, 0, SEEK_SET);
 
-	/* Place each character from the file into the array */
-	char* chars = NULL;
-	chars = malloc((size + 1) * sizeof(*chars));
-	if(!fread(chars, size, 1, file)) {
-		fprintf(stderr, "Error: Unable to read %s\n", filename);
-		exit(EXIT_FAILURE);
+	FILE* f = fopen(filename, "r");
+	if(f == NULL) {
+		free(chars);
+		perror("Can't open file");
+		return 0;
 	}
-	chars[size] = '\0';
-	
-	/* Close the file */
-	fclose(file);
 
-	/* Evaluate the code */
+	char c, *r = NULL;
+	while((c = fgetc(f)) != EOF) {
+		if((r = strchr("<>+-[].,", c))) {
+			if(n == sz) {
+				sz *= 2;
+				void* t = realloc(chars, sz);
+				if(t == NULL) {
+					free(chars);
+					fclose(f);
+					perror("Error allocating memory");
+					return 0;
+				}
+				chars = t;
+			}
+			chars[n++] = *r;
+		}
+	}
+	fclose(f);
+
 	bf_eval(chars);
+	free(chars);
+
+	return 1;
 }
 
 int main(int argc, char *argv[]) {
@@ -54,9 +64,11 @@ int main(int argc, char *argv[]) {
 			switch(opt) {
 				case 'h':
 					fprintf(stdout, USAGEMSG);
-					return EXIT_SUCCESS;
+					exit(EXIT_SUCCESS);
 				case 'f':
-					bf_readfile(optarg);
+					if(!bf_readfile(optarg)) {
+						exit(EXIT_FAILURE);
+					}
 					break;
 				case 'e':
 					bf_eval(optarg);
@@ -68,7 +80,7 @@ int main(int argc, char *argv[]) {
 					}
 					else {
 						fprintf(stderr, "The number of tape memory locations to be displayed should be between 0 and 65535.\n");
-						return EXIT_FAILURE;
+						exit(EXIT_FAILURE);
 					}
 					break;
 				case '?':
@@ -88,6 +100,8 @@ int main(int argc, char *argv[]) {
 			fprintf(stderr, "Unable to read into tape\n");
 		}
 		bf_eval(pipe);
+
+		free(pipe);
 	}
 
 	return EXIT_SUCCESS;
